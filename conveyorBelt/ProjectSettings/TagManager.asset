@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - MissTrigger
+  - Container
+  - LeftContainer
+  - RightContainer
+  - Slap
+  - LeftMissTrigger
+  - RightMissTrigger
   layers:
   - Default
   - TransparentFX

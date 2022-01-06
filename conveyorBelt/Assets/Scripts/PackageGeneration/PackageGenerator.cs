@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PackageGenerator : MonoBehaviour
 {
@@ -18,29 +19,31 @@ public class PackageGenerator : MonoBehaviour
     /// the package rate over time is initPackageRate + (kA^x)/kB, where
     /// kA, kB are constants and x is the number of packages generated. </para>
     /// </summary>
-    [SerializeField] private float initPackageRate;
-    [SerializeField] private float kA;
-    [SerializeField] private float kB;
+    [SerializeField] private float initPackageRate = 1.5f;
+    [SerializeField] private float kA = 1.1f;
+    [SerializeField] private float kB = 8;
+
+    [SerializeField] private float cooldownTime;
 
     /// <summary>
     /// The lowest package rate that is allowed. 
     /// </summary>
-    [SerializeField] private float minPackageRate;
+    [SerializeField] private float minPackageRate = 0.67f;
 
     private float currentPackageRate;
-    
+
+    public int packagesGenerated;
 
     /// <summary>
     /// How fast the package moves across the conveyor belt. 
     /// </summary>
-    [SerializeField] private float minPackageSpeed;
+    [SerializeField] private float minPackageSpeed = 0.75f;
 
     /// <summary>
     /// How fast the package moves across the conveyor belt. 
     /// </summary>
-    [SerializeField] private float maxPackageSpeed;
+    [SerializeField] private float maxPackageSpeed = 3f;
 
-    private int packagesGenerated;
     private bool pauseGenerator = false;//Controlled by a Unity Event to be added. 
     private Coroutine generatePackages;
 
@@ -49,10 +52,12 @@ public class PackageGenerator : MonoBehaviour
     private int mostRecentPackageDirection;
     private int mostRecentPackagePosIndex;
 
+
     // Start is called before the first frame update
     void Start()
     {
         packagesGenerated = 0;
+        FindObjectOfType<GameManager>().resetEvent.AddListener(Restart);
     }
 
     // Update is called once per frame
@@ -61,6 +66,36 @@ public class PackageGenerator : MonoBehaviour
         if (!pauseGenerator && generatePackages == null) {
             generatePackages = StartCoroutine(GeneratePackages());
         }
+    }
+
+    public void Stop() {
+        pauseGenerator = true;
+        generatePackages = null;
+    }
+
+    public void Continue() {
+        pauseGenerator = false;
+    }
+
+    public void Restart() {
+        CoolDown(cooldownTime);
+    }
+
+    public void CoolDown(float seconds) {
+        if (generatePackages != null) StopCoroutine(generatePackages);
+        generatePackages = null;
+        StartCoroutine(RunCooldown(seconds));
+    }
+
+    private IEnumerator RunCooldown(float seconds) {
+        pauseGenerator = true;
+
+        while (pauseGenerator) {        
+            yield return new WaitForSeconds(seconds);
+
+            pauseGenerator = false;
+        }
+        
     }
 
     private IEnumerator GeneratePackages() {
@@ -97,6 +132,35 @@ public class PackageGenerator : MonoBehaviour
         package.GetComponent<Package>().SetSpeed(packageSpeed);
 
         packagesGenerated++;
+    }
+
+    public void SetPackageSpeedRange(float min, float max) {
+        minPackageSpeed = min;
+        maxPackageSpeed = max;
+    }
+
+    public float GetMinPackageSpeed() {
+        return minPackageSpeed;
+    }
+
+    public float GetMaxPackageSpeed() {
+        return maxPackageSpeed;
+    }
+
+    public void SetInitPackageRate(float val) {
+        initPackageRate = val;
+    }
+
+    public void SetMinPackageRate(float val) {
+        minPackageRate = val;
+    }
+
+    public float GetMinPackageRate() {
+        return minPackageRate;
+    }
+
+    public float GetInitPackageRate() {
+        return initPackageRate;
     }
 
     public string InfoString() {

@@ -56,11 +56,15 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Container\Container.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\PackageGeneration\PackageGenerator.cs" />
+    <Compile Include="Assets\Scripts\Container\Container.cs" />
+    <Compile Include="Assets\Scripts\LevelValueAssigner.cs" />
     <Compile Include="Assets\Scripts\PackageGeneration\Package.cs" />
-    <Compile Include="Assets\Scripts\PackageGeneration\PackageGeneratorTest.cs" />
     <Compile Include="Assets\Scripts\PackageGeneration\MissCounter.cs" />
+    <Compile Include="Assets\Scripts\PackageGeneration\PackageGeneratorTest.cs" />
+    <Compile Include="Assets\Scripts\GameMode.cs" />
+    <Compile Include="Assets\Scripts\GameModeEnum.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
