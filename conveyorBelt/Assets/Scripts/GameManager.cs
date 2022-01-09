@@ -41,6 +41,11 @@ public class GameManager : MonoBehaviour
         pg.CoolDown(2f);
         LevelValueAssigner.AssignLevelValues(pg, level);
         gamemode = FindObjectOfType<GameMode>();
+        if (gamemode == null) {
+            Debug.LogError("Error: GameMode object is not in the scene.");
+        }
+
+        level = gamemode.GetStartingLevel();
     }
 
     // Update is called once per frame

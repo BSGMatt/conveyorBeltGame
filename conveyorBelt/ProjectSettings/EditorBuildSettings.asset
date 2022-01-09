@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameLoopTest.unity
     guid: 524ad40ed965d9a4b9fabc1fd3b4c5e9
+  - enabled: 1
+    path: Assets/Scenes/MenuTest.unity
+    guid: 8b9123e506ad33f4c99a00544d9632d7
   m_configObjects: {}

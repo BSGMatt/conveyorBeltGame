@@ -59,12 +59,14 @@
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\PackageGeneration\PackageGenerator.cs" />
     <Compile Include="Assets\Scripts\Container\Container.cs" />
+    <Compile Include="Assets\Scripts\GameMode.cs" />
     <Compile Include="Assets\Scripts\LevelValueAssigner.cs" />
     <Compile Include="Assets\Scripts\PackageGeneration\Package.cs" />
     <Compile Include="Assets\Scripts\PackageGeneration\MissCounter.cs" />
     <Compile Include="Assets\Scripts\PackageGeneration\PackageGeneratorTest.cs" />
-    <Compile Include="Assets\Scripts\GameMode.cs" />
     <Compile Include="Assets\Scripts\GameModeEnum.cs" />
+    <Compile Include="Assets\Scripts\UI\LevelSelect.cs" />
+    <Compile Include="Assets\Scripts\UI\SceneLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
