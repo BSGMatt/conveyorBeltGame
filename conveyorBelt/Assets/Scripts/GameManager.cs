@@ -37,15 +37,18 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //pause the package generator for a second to give player some breathing room before starting. 
-        pg.CoolDown(2f);
-        LevelValueAssigner.AssignLevelValues(pg, level);
+        //pause the package generator for a second to give player some breathing room before starting.      
         gamemode = FindObjectOfType<GameMode>();
         if (gamemode == null) {
             Debug.LogError("Error: GameMode object is not in the scene.");
         }
-
-        level = gamemode.GetStartingLevel();
+        else {
+            level = gamemode.GetStartingLevel();
+        }   
+        LevelValueAssigner.AssignLevelValues(pg, level);
+        //Update display Text
+        levelDisplay.text = UpdateDisplayText();
+        pg.CoolDown(2f);
     }
 
     // Update is called once per frame
@@ -85,7 +88,7 @@ public class GameManager : MonoBehaviour
         leftScore = 0;
         rightScore = 0;
         totalScore = 0;
-        level = 0;
+        level = gamemode.GetStartingLevel();
         LevelValueAssigner.AssignLevelValues(pg, level);
     }
 

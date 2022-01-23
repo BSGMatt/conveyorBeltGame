@@ -52,6 +52,7 @@ public class MissCounter : MonoBehaviour
             default:
                 return "Misses: " + numberOfMisses + "/" + maxAmountOfMisses;
             case GameModeEnum.VERSUS:
+            case GameModeEnum.VS_AI:
                 return "1P Misses: " + leftMisses + "/" + maxAmountOfMisses + 
                     "\n" + "2P Misses: " + rightMisses + "/" + maxAmountOfMisses;
         }

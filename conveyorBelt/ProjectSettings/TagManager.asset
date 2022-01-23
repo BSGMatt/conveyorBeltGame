@@ -11,6 +11,10 @@ TagManager:
   - Slap
   - LeftMissTrigger
   - RightMissTrigger
+  - AI
+  - AboutToMissTrigger
+  - GettingCloserTrigger
+  - Package
   layers:
   - Default
   - TransparentFX

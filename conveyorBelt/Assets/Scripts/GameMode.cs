@@ -27,6 +27,9 @@ public class GameMode : MonoBehaviour
             case 2:
                 this.mode = GameModeEnum.VERSUS;
                 break;
+            case 3:
+                this.mode = GameModeEnum.VS_AI;
+                break;
         }
     }
 
@@ -45,14 +48,14 @@ public class GameMode : MonoBehaviour
     public bool LosingConditionSatisfied() {
         MissCounter mc = FindObjectOfType<MissCounter>();
         switch(mode) {
+            default: //Versus or Vs. AI
+                return mc.LeftExceededMaxMisses() || mc.RightExceededMaxMisses();
             case GameModeEnum.SINGLE_PLAYER:
                 return mc.ExceededMaxNumberOfMisses();
             case GameModeEnum.CO_OP:
                 return mc.ExceededMaxNumberOfMisses();
-            case GameModeEnum.VERSUS:
-                return mc.LeftExceededMaxMisses() || mc.RightExceededMaxMisses();
         }
 
-        return false;
+
     }
 }

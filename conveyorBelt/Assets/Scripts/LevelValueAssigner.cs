@@ -7,17 +7,17 @@ using UnityEngine;
 /// </summary>
 public static class LevelValueAssigner
 {
-    private static int NUM_HARDCODED_LEVELS = 3;
+    private static int NUM_HARDCODED_LEVELS = 0;
 
     /// <summary>
     /// Minimum package speeds for levels 1, 2, and 3. 
     /// </summary>
-    private static float[] startingMinSpeeds = {1.1f, 1.2f, 1.3f};
+    private static float[] startingMinSpeeds = {1.1f, 1.2f, 2};
 
     /// <summary>
     /// Maximum package speeds for levels 1, 2, and 3. 
     /// </summary>
-    private static float[] startingMaxSpeeds = {3.1f, 3.2f, 3.3f};
+    private static float[] startingMaxSpeeds = {3.1f, 3.2f, 3}; //3.1f
 
     private static float[] startingInitPackageRates = {1.4f, 1.35f, 1.3f};
 
@@ -37,7 +37,7 @@ public static class LevelValueAssigner
         else {
             //If not, use the formulas. 
             pg.SetPackageSpeedRange(MinPackageSpeedFormula(level), MaxPackageSpeedFormula(level));
-            pg.SetInitPackageRate(InitPackageSpeedFormula(level));
+            pg.SetInitPackageRate(InitPackageRateFormula(level));
             pg.SetMinPackageRate(MinPackageRateFormula(level));
         }
 
@@ -45,18 +45,19 @@ public static class LevelValueAssigner
     }
 
     private static float MinPackageSpeedFormula(int level) {
-        return startingMinSpeeds[2] + 0.2f * (level - 3);
+        return   (0.4f * level) + startingMinSpeeds[2];
     }
 
     private static float MaxPackageSpeedFormula(int level) {
-        return startingMaxSpeeds[2] + (-3 * Mathf.Log10(level - 3)) + 0.4f * (level - 3);
+        return (0.0044f * (level * level)) + (0.7624f * level) + startingMaxSpeeds[2];
     }
 
     private static float MinPackageRateFormula(int level) {
         return 0.5f;
     }
 
-    private static float InitPackageSpeedFormula(int level) {
-        return 0.8f * Mathf.Pow((level - 3), -1 / 4) + 0.5f; 
+    private static float InitPackageRateFormula(int level) {
+        float value = ((0.0013f * (level * level)) - (0.0636f * level) + 1f);
+        return value < 0.5f ? 0.5f : value; 
     }
 }

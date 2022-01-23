@@ -152,11 +152,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 142fa530d4ea30d4291e8e70cc0779fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 0
+  level: 20
   pg: {fileID: 1262484122}
-  packagesGeneratedBeforeNewLevel: 5
+  packagesGeneratedBeforeNewLevel: 100
   levelDisplay: {fileID: 1523702951}
   cooldownTime: 3
+  gamemode: {fileID: 0}
+  resetEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  pauseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  unPauseEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &439769190
 Transform:
   m_ObjectHideFlags: 0
@@ -272,8 +282,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 190, y: -110}
-  m_SizeDelta: {x: 336.34, y: 176.06}
+  m_AnchoredPosition: {x: 190, y: -170.49}
+  m_SizeDelta: {x: 336.34, y: 297.04}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &665988220
 MonoBehaviour:
@@ -427,7 +437,7 @@ GameObject:
   - component: {fileID: 856258967}
   m_Layer: 0
   m_Name: RightMissTrigger
-  m_TagString: MissTrigger
+  m_TagString: RightMissTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -622,15 +632,13 @@ MonoBehaviour:
   - {fileID: 2043563791}
   - {fileID: 1128955173}
   - {fileID: 1291278636}
-  - {fileID: 1895853466}
-  - {fileID: 1311040642}
   initPackageRate: 1.5
   kA: 1.1
   kB: 8
   cooldownTime: 0
   minPackageRate: 0.67
   packagesGenerated: 0
-  minPackageSpeed: 0.75
+  minPackageSpeed: 2
   maxPackageSpeed: 3
 --- !u!4 &1262484123
 Transform:
@@ -1009,7 +1017,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10af21847f3f1e740a3e8752f8c52df6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  packageMissedEvent:
+  leftMissEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  rightMissEvent:
     m_PersistentCalls:
       m_Calls: []
   maxAmountOfMisses: 3
@@ -1027,7 +1038,7 @@ GameObject:
   - component: {fileID: 1866591440}
   m_Layer: 0
   m_Name: LeftMissTrigger
-  m_TagString: MissTrigger
+  m_TagString: LeftMissTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

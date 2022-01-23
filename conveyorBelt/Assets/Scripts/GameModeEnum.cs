@@ -6,5 +6,6 @@ public enum GameModeEnum
 {
     SINGLE_PLAYER = 0,
     CO_OP = 1, 
-    VERSUS = 2
+    VERSUS = 2,
+    VS_AI = 3
 }

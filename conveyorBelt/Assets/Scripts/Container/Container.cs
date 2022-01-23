@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Container : MonoBehaviour
 {
+    public GameObject ai;
+    public GameObject aiAboutToMissTrigger;
+
     //The position of each row.
-    [SerializeField] private Transform[] positionNodes;
+    public Transform[] positionNodes;
 
     //The GameObject the container will get its slap hurt box from.
-    [SerializeField] private GameObject slapBox;
+    public GameObject slapBox;
     [SerializeField] private float slapDuration = 0.5f;
     private Coroutine slap = null;
 
@@ -18,11 +21,31 @@ public class Container : MonoBehaviour
     [SerializeField] private string mySlapButton;
 
 
-    private int currentPosition;
+    protected int currentPosition;
 
-    private bool controlEnabled = true;
-    
+    protected bool controlEnabled = true;
+
+    //Check if the game is in "Vs. AI" mode and that this is the container on the right.
+    //If so, then activate the AI Container and deactivate this one. 
+    public void Awake() {
+        if (FindObjectOfType<GameMode>().GetMode() == GameModeEnum.VS_AI && 
+            gameObject.CompareTag("RightContainer")) {
+
+            ai.SetActive(true);
+            aiAboutToMissTrigger.SetActive(true);
+            gameObject.SetActive(false);
+        }
+        else {
+            if (ai != null) {
+                ai.SetActive(false);
+                aiAboutToMissTrigger.SetActive(false);
+            }
+        }
+    }
+
     public void Start() {
+
+
         //Set the current position to be in the middle. 
         currentPosition = (positionNodes.Length - 1) / 2;
 
@@ -42,11 +65,11 @@ public class Container : MonoBehaviour
 
     }
 
-    private void Pause() {
+    protected void Pause() {
         controlEnabled = false;
     }
 
-    private void UnPause() {
+    protected void UnPause() {
         controlEnabled = true;
     }
 
@@ -63,7 +86,7 @@ public class Container : MonoBehaviour
         }
     }
 
-    private void MoveUp() {
+    protected void MoveUp() {
 
         currentPosition++;
         
@@ -76,7 +99,7 @@ public class Container : MonoBehaviour
         transform.position = positionNodes[currentPosition].position;
     }
 
-    private void MoveDown() {
+    protected void MoveDown() {
 
         currentPosition--;
 
@@ -89,7 +112,7 @@ public class Container : MonoBehaviour
         transform.position = positionNodes[currentPosition].position;
     }
 
-    private void StartSlapCoroutine() {
+    protected void StartSlapCoroutine() {
         if (slap == null) slap = StartCoroutine(Slap());
     }
 
