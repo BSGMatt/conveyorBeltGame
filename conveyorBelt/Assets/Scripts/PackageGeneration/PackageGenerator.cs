@@ -30,7 +30,7 @@ public class PackageGenerator : MonoBehaviour
     /// </summary>
     [SerializeField] private float minPackageRate = 0.67f;
 
-    private float currentPackageRate;
+    public float currentPackageRate;
 
     public int packagesGenerated;
 
@@ -80,10 +80,12 @@ public class PackageGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //If the package generator is not making packages and isn't paused, then make packages. 
         if (!pauseGenerator && generatePackages == null) {
             generatePackages = StartCoroutine(GeneratePackages());
         }
 
+        //Calculate the average speed of a package at a set position. 
         for (int i = 0; i < rows.Length; i++) {
             if(packagesPerPosition[i] == 0) {
                 averagePackageSpeedPerPosition[i] = 0;
@@ -92,19 +94,35 @@ public class PackageGenerator : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Stop making packages. 
+    /// </summary>
     public void Stop() {
         pauseGenerator = true;
         generatePackages = null;
     }
 
+    /// <summary>
+    /// Unpauses the package generator. 
+    /// </summary>
     public void Continue() {
         pauseGenerator = false;
     }
 
+    /// <summary>
+    /// Set
+    /// </summary>
     public void Restart() {
         CoolDown(cooldownTime);
+        packagesGenerated = 0;
+        currentPackageRate = initPackageRate;
     }
 
+    /// <summary>
+    /// Briefly pauses package generation for a set amount of time
+    /// </summary>
+    /// <param name="seconds">The amount of time, in seconds, the package generator will go
+    /// on cooldown for. </param>
     public void CoolDown(float seconds) {
         if (generatePackages != null) StopCoroutine(generatePackages);
         generatePackages = null;
@@ -156,6 +174,8 @@ public class PackageGenerator : MonoBehaviour
         package.GetComponent<Package>().SetSpeed(packageSpeed);
         package.GetComponent<Package>().SetPosition(rowIndex);
 
+        //If this pacakge is going to the right and is faster than the fastest package, then set this to fastest package. 
+        //(We need to check if it is going to the right since this is meant to be used by the AI container to 
         if (direction > 0 && (fastestPackage == null || packageSpeed > fastestPackage.GetSpeed())) {
            
             fastestPackage = package.GetComponent<Package>();
@@ -172,11 +192,20 @@ public class PackageGenerator : MonoBehaviour
         packagesGenerated++;
     }
 
+    /// <summary>
+    /// Sets the minimum and maximum speeds that the packages can be set to. 
+    /// </summary>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
     public void SetPackageSpeedRange(float min, float max) {
         minPackageSpeed = min;
         maxPackageSpeed = max;
     }
 
+    /// <summary>
+    /// Returns the position that currently has the most packages on it. 
+    /// </summary>
+    /// <returns></returns>
     public int PositionWithMostPackages() {
         int max = packagesPerPosition[0];
         int pos = 0;

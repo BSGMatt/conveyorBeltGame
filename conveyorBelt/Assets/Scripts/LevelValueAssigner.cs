@@ -26,7 +26,12 @@ public static class LevelValueAssigner
     public static void AssignLevelValues(PackageGenerator pg, int level) {
 
         //If level = 0, keep initial values
-        if (level <= 0) return;
+        if (level <= 0) {
+            pg.SetPackageSpeedRange(startingMinSpeeds[0], startingMaxSpeeds[0]);
+            pg.SetInitPackageRate(startingInitPackageRates[0]);
+            pg.SetMinPackageRate(startingMinPackageRates[0]);
+            return;
+        }
 
         //Check if there are hardcoded values for this level.
         if (level <= NUM_HARDCODED_LEVELS) {

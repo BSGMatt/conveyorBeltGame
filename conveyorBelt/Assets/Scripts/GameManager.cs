@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private int level = 0;
     [SerializeField] private PackageGenerator pg;
+    [SerializeField] private AIContainer ai;
 
     [SerializeField] private int packagesGeneratedBeforeNewLevel = 100;
     [SerializeField] private Text levelDisplay;
@@ -21,6 +22,8 @@ public class GameManager : MonoBehaviour
     public UnityEvent pauseEvent;
     public UnityEvent unPauseEvent;
 
+
+
     private bool paused = false;
 
     private int leftScore;
@@ -31,7 +34,6 @@ public class GameManager : MonoBehaviour
         resetEvent = new UnityEvent();
         pauseEvent = new UnityEvent();
         unPauseEvent = new UnityEvent();
-        resetEvent.AddListener(Restart);
     }
 
     // Start is called before the first frame update
@@ -44,10 +46,14 @@ public class GameManager : MonoBehaviour
         }
         else {
             level = gamemode.GetStartingLevel();
+            if (gamemode.GetMode() == GameModeEnum.VS_AI) {
+                ai.gameObject.SetActive(true);
+                ai.ApplyDifficulty(gamemode.GetAIDifficulty());
+            }
         }   
         LevelValueAssigner.AssignLevelValues(pg, level);
-        //Update display Text
-        levelDisplay.text = UpdateDisplayText();
+
+
         pg.CoolDown(2f);
     }
 
@@ -63,6 +69,11 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if (paused && Input.GetKeyDown(KeyCode.Tab)) {
+            Debug.Log("Quit");
+            Application.Quit();
+        }
+
         //Check if enough packages have been generated to advance to a new level. 
         if (pg.packagesGenerated >= packagesGeneratedBeforeNewLevel) {
             NewLevel();
@@ -73,7 +84,13 @@ public class GameManager : MonoBehaviour
 
         //Check for losing condition. 
         if (gamemode.LosingConditionSatisfied()) {
-            resetEvent.Invoke();
+            Restart();
+        }
+
+        //Check if the player pressed a number key.
+        int key = PressedANumberKey();
+        if (key != -1) {
+            SetGameSpeed(KeyToNumber(key));
         }
     }
 
@@ -90,6 +107,7 @@ public class GameManager : MonoBehaviour
         totalScore = 0;
         level = gamemode.GetStartingLevel();
         LevelValueAssigner.AssignLevelValues(pg, level);
+        resetEvent.Invoke();
     }
 
     public void Pause() {
@@ -107,8 +125,8 @@ public class GameManager : MonoBehaviour
     private string UpdateDisplayText() {
         StringBuilder sb = new StringBuilder();
 
-        sb.Append("Level: " + level + "\n");
-        if (gamemode.GetMode() == GameModeEnum.CO_OP || gamemode.GetMode() == GameModeEnum.VERSUS) {
+        sb.Append("Level: " + (level + 1) + "\n");
+        if (gamemode.GetMode() == GameModeEnum.CO_OP || gamemode.GetMode() == GameModeEnum.VERSUS || gamemode.GetMode() == GameModeEnum.VS_AI) {
             sb.Append("1P Score: " + leftScore + "\n");
             sb.Append("2P Score: " + rightScore + "\n");
         }
@@ -116,6 +134,35 @@ public class GameManager : MonoBehaviour
         sb.Append("Total Score: " + totalScore);
 
         return sb.ToString();
+    }
+
+    //Converts a number to its ASCII code equivalent
+    private int NumberToKey(int num) {
+        if (num < 0 || num > 9) return 0;
+        return num + 48;
+    }
+
+    private int KeyToNumber(KeyCode key) {
+        return (int)key - 48;
+    }
+
+    private int KeyToNumber(int key) {
+        return (int)key - 48;
+    }
+
+    private int PressedANumberKey() {
+        foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode))) {
+            if (Input.GetKeyDown(key) && ((int) key >= 48 && (int) key <= 57)) {
+                return (int) key;
+            }
+        }
+
+        return -1;
+    }
+
+    private void SetGameSpeed(int value) {
+        if (value <= 0) return;
+        Time.timeScale = (float) 1 / (float) value;
     }
 
     public void IncLeftScore(int value) {
